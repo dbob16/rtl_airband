@@ -1,0 +1,19 @@
+services:
+  rtl-airband:
+    build: .
+    restart: unless-stopped
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+    volumes:
+      - "./rtl_airband.conf:/app/rtl_airband.conf:ro"
+      - "./output:/output"
+  rtl-filebrowser:
+    image: dbob16/filebrowser:latest
+    restart: unless-stopped
+    environment:
+      REPO_TITLE: "Scanner Recordings"
+      REPO_PATH: "/output"
+    ports:
+      - "8155:80"
+    volumes:
+      - "./output:/output:ro"
